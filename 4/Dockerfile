@@ -20,8 +20,6 @@ RUN groupadd --gid ${GID} scanner-cli \
 
 WORKDIR /opt
 
-USER 0
-
 RUN wget -U "scannercli" -q -O /opt/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip \
     && unzip sonar-scanner-cli.zip \
     && rm sonar-scanner-cli.zip \
@@ -31,8 +29,7 @@ RUN wget -U "scannercli" -q -O /opt/sonar-scanner-cli.zip https://binaries.sonar
     && rm nodejs.tar.xz \
     && mv node-${NODEJS_VERSION}-linux-x64 ${NODEJS_HOME} \
     && npm install -g typescript@3.6.3 \
-    && mkdir -p /home/jenkins/.sonar \
-    && chmod -R 777 /home/jenkins/.sonar
+    && rm /opt/sonar-scanner/conf/sonar-scanner.properties
 
 COPY --chown=scanner-cli:scanner-cli bin /usr/bin/
 
